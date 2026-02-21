@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pari Kids Wear — Premium Kids Fashion</title>
+    <meta name="description" content="Pari Kids Wear — Premium, stylish, and comfortable kids clothing in Davangere.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ===== Reset & Base ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-deep: #08080c;
+            --bg-surface: #0e0e14;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --glass: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f0f0f5;
+            --text-secondary: #8e8ea0;
+            --accent: #c9a84c;
+            --accent-glow: rgba(201, 168, 76, 0.25);
+            --gradient-gold: linear-gradient(135deg, #c9a84c 0%, #f7e5a0 50%, #c9a84c 100%);
+            --gradient-hero: linear-gradient(160deg, #0e0e14 0%, #141422 40%, #0e0e14 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== Logo Intro Screen ===== */
+        .loader-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: var(--bg-deep);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .loader-screen.hide {
+            animation: introZoomOut 1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        }
+
+        .intro-logo {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+            mix-blend-mode: lighten;
+            opacity: 0;
+            transform: scale(0.3) rotateY(-30deg);
+            animation: logoReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+            filter: drop-shadow(0 0 0px transparent);
+        }
+
+        .intro-logo.glow {
+            animation: logoPulse 1.5s ease-in-out forwards;
+        }
+
+        .intro-tagline {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: var(--accent);
+            opacity: 0;
+            transform: translateY(16px);
+            animation: fadeUp 0.7s ease forwards 1s;
+        }
+
+        .intro-line {
+            width: 0;
+            height: 1.5px;
+            background: var(--gradient-gold);
+            animation: lineExpand 0.8s ease forwards 0.8s;
+        }
+
+        /* Logo appears with 3D perspective */
+        @keyframes logoReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotateY(-30deg);
+                filter: drop-shadow(0 0 0px transparent);
+            }
+
+            60% {
+                opacity: 1;
+                transform: scale(1.08) rotateY(5deg);
+                filter: drop-shadow(0 0 30px var(--accent-glow));
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1) rotateY(0deg);
+                filter: drop-shadow(0 0 20px var(--accent-glow));
+            }
+        }
+
+        /* Logo glow pulse before exit */
+        @keyframes logoPulse {
+            0% {
+                transform: scale(1) rotateY(0deg);
+                filter: drop-shadow(0 0 20px var(--accent-glow));
+            }
+
+            50% {
+                transform: scale(1.12) rotateY(8deg);
+                filter: drop-shadow(0 0 50px var(--accent-glow)) brightness(1.4);
+            }
+
+            100% {
+                transform: scale(1.15) rotateY(0deg);
+                filter: drop-shadow(0 0 60px var(--accent-glow)) brightness(1.5);
+            }
+        }
+
+        /* Whole screen zooms out and fades */
+        @keyframes introZoomOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(1.8);
+                visibility: hidden;
+                pointer-events: none;
+            }
+        }
+
+        /* Gold line expand */
+        @keyframes lineExpand {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 80px;
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== 3D Floating Shapes Background ===== */
+        .scene-3d {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            perspective: 1200px;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.08;
+            animation: floatShape 18s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+            top: -10%;
+            left: -5%;
+            animation-delay: 0s;
+            transform: translateZ(-200px) rotateX(25deg);
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, #6c63ff 0%, transparent 70%);
+            top: 40%;
+            right: -8%;
+            animation-delay: -6s;
+            transform: translateZ(-300px) rotateY(30deg);
+        }
+
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, #ff6b9d 0%, transparent 70%);
+            bottom: 10%;
+            left: 20%;
+            animation-delay: -12s;
+            transform: translateZ(-150px) rotateX(-20deg);
+        }
+
+        .shape-4 {
+            width: 180px;
+            height: 180px;
+            background: radial-gradient(circle, #4ecdc4 0%, transparent 70%);
+            top: 20%;
+            left: 60%;
+            animation-delay: -9s;
+            transform: translateZ(-250px) rotateY(-15deg);
+        }
+
+        @keyframes floatShape {
+
+            0%,
+            100% {
+                transform: translateY(0) rotateX(0deg) rotateY(0deg) scale(1);
+            }
+
+            25% {
+                transform: translateY(-40px) rotateX(10deg) rotateY(-15deg) scale(1.05);
+            }
+
+            50% {
+                transform: translateY(-20px) rotateX(-5deg) rotateY(10deg) scale(0.98);
+            }
+
+            75% {
+                transform: translateY(-50px) rotateX(8deg) rotateY(-8deg) scale(1.02);
+            }
+        }
+
+        /* ===== Header / Navbar ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s ease;
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(8, 8, 12, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 40px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-logo img {
+            height: 50px;
+            mix-blend-mode: lighten;
+            filter: brightness(1.1);
+            transition: transform 0.4s ease;
+        }
+
+        .nav-logo:hover img {
+            transform: rotateY(15deg) scale(1.05);
+        }
+
+        .nav-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            background: var(--gradient-hero);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            perspective: 900px;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 4.5s;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            opacity: 0;
+            animation: heroTitle3D 1s ease forwards 4.7s;
+        }
+
+        .hero-title .gold {
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            animation: shimmer3D 4s ease-in-out infinite 6s;
+        }
+
+        @keyframes heroTitle3D {
+            from {
+                opacity: 0;
+                transform: perspective(900px) rotateX(15deg) translateY(50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: perspective(900px) rotateX(0deg) translateY(0);
+            }
+        }
+
+        @keyframes shimmer3D {
+
+            0%,
+            100% {
+                transform: rotateY(0deg);
+                filter: brightness(1);
+            }
+
+            50% {
+                transform: rotateY(3deg);
+                filter: brightness(1.3);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            font-weight: 300;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 48px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 5s;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 5.3s;
+        }
+
+        /* ===== Buttons ===== */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: var(--gradient-gold);
+            color: #0e0e14;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px) scale(1.03) rotateX(3deg);
+            box-shadow: 0 12px 40px var(--accent-glow);
+        }
+
+        .btn-primary:hover::before {
+            transform: translateX(100%);
+        }
+
+        .btn-glass {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: var(--glass);
+            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            border: 1px solid var(--glass-border);
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .btn-glass:hover {
+            transform: translateY(-3px) rotateX(3deg);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent);
+            box-shadow: 0 8px 30px rgba(201, 168, 76, 0.12);
+        }
+
+        /* ===== Scroll Indicator ===== */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease forwards 5.6s;
+        }
+
+        .scroll-indicator span {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .scroll-mouse {
+            width: 24px;
+            height: 38px;
+            border: 2px solid var(--text-secondary);
+            border-radius: 14px;
+            position: relative;
+        }
+
+        .scroll-mouse::after {
+            content: '';
+            width: 4px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 4px;
+            position: absolute;
+            top: 6px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: scrollDot 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollDot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                opacity: 0.3;
+                transform: translateX(-50%) translateY(14px);
+            }
+        }
+
+        /* ===== Section Common ===== */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 24px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 4vw, 46px);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* ===== Features / Why Us ===== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 40px 32px;
+            text-align: center;
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            transform: perspective(1000px) rotateY(15deg) translateY(30px);
+        }
+
+        .feature-card.in-view {
+            opacity: 1;
+            transform: perspective(1000px) rotateY(0deg) translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg) translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 60px rgba(201, 168, 76, 0.08);
+        }
+
+        .feature-icon {
+            font-size: 42px;
+            margin-bottom: 20px;
+            display: inline-block;
+            animation: float3DIcon 4s ease-in-out infinite;
+        }
+
+        @keyframes float3DIcon {
+
+            0%,
+            100% {
+                transform: translateY(0) rotateY(0deg);
+            }
+
+            50% {
+                transform: translateY(-8px) rotateY(15deg);
+            }
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* ===== Contact Section ===== */
+        .contact-section {
+            background: var(--bg-surface);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .contact-info-card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 48px 36px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .contact-info-card:hover {
+            transform: perspective(800px) rotateX(2deg) rotateY(-3deg);
+        }
+
+        .contact-info-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            margin-bottom: 28px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 22px;
+            padding: 16px;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+            transform: translateX(6px);
+        }
+
+        .contact-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+        }
+
+        .contact-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .contact-detail .label {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .contact-detail .value {
+            font-size: 16px;
+            color: var(--text-primary);
+            font-weight: 400;
+        }
+
+        .contact-detail .value a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-detail .value a:hover {
+            color: var(--accent);
+        }
+
+        .map-wrapper {
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .map-wrapper:hover {
+            transform: perspective(800px) rotateX(-2deg) rotateY(3deg);
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 420px;
+            border: 0;
+            display: block;
+            filter: brightness(0.8) contrast(1.1) saturate(0.5);
+        }
+
+        /* ===== QR / Social Section ===== */
+        .social-section {
+            text-align: center;
+        }
+
+        .social-card {
+            display: inline-block;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 48px 56px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.5s ease;
+            transform-style: preserve-3d;
+        }
+
+        .social-card:hover {
+            transform: perspective(600px) rotateX(4deg) rotateY(-4deg) translateY(-6px);
+            box-shadow: 0 20px 60px rgba(201, 168, 76, 0.1);
+            border-color: var(--accent);
+        }
+
+        .social-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin-bottom: 8px;
+        }
+
+        .social-card p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .qr-img {
+            width: 160px;
+            height: 160px;
+            padding: 12px;
+            background: white;
+            border-radius: 16px;
+            transition: transform 0.5s ease;
+        }
+
+        .social-card:hover .qr-img {
+            transform: rotateY(8deg) scale(1.05);
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid var(--glass-border);
+            background: var(--bg-deep);
+        }
+
+        .footer-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            background: var(--gradient-gold);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== Scroll Reveal Animation ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 14px 20px;
+            }
+
+            .nav-brand {
+                font-size: 16px;
+            }
+
+            .nav-links {
+                gap: 18px;
+            }
+
+            .nav-links a {
+                font-size: 12px;
+                letter-spacing: 1px;
+            }
+
+            .hero {
+                padding: 100px 20px 60px;
+            }
+
+            .hero-subtitle {
+                font-size: 15px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section {
+                padding: 60px 16px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info-card {
+                padding: 32px 24px;
+            }
+
+            .social-card {
+                padding: 36px 28px;
+            }
+
+            .nav-logo img {
+                height: 38px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Logo Intro Screen -->
+    <div class="loader-screen" id="introScreen">
+        <img src="logo.png" alt="Pari Kids Wear" class="intro-logo" id="introLogo">
+        <div class="intro-line"></div>
+        <div class="intro-tagline">Premium Kids Fashion</div>
+    </div>
+
+    <!-- 3D Background Shapes -->
+    <div class="scene-3d">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+
+    <!-- Navbar -->
+    <header class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <img src="logo.png" alt="Pari Kids Wear Logo">
+            <span class="nav-brand">Pari Kids Wear</span>
+        </a>
+        <nav class="nav-links">
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a href="#social">Follow</a>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-content">
+            <span class="hero-eyebrow">✦ Premium Kids Fashion ✦</span>
+            <h1 class="hero-title">
+                Dress Your Little<br><span class="gold">Stars in Style</span>
+            </h1>
+            <p class="hero-subtitle">
+                Curated collections of stylish, comfortable, and premium kids clothing — because every child deserves to
+                shine.
+            </p>
+            <div class="hero-actions">
+                <a class="btn-primary" href="https://www.instagram.com/parikidswear_/" target="_blank">
+                    ✦ Follow on Instagram
+                </a>
+                <a class="btn-glass" href="tel:+918660724090">
+                    📞 Call the Shop
+                </a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-mouse"></div>
+        </div>
+    </section>
+
+    <!-- Features / About -->
+    <section class="section" id="about">
+        <div class="section-header reveal">
+            <span class="section-label">Why Choose Us</span>
+            <h2 class="section-title">Crafted with Love, Worn with Joy</h2>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card" style="transition-delay: 0s;">
+                <div class="feature-icon">👗</div>
+                <h3>Premium Quality</h3>
+                <p>Only the softest fabrics and finest stitching for your little ones' comfort all day long.</p>
+            </div>
+            <div class="feature-card" style="transition-delay: 0.15s;">
+                <div class="feature-icon">🎨</div>
+                <h3>Trendy Designs</h3>
+                <p>Stay ahead of fashion with our curated selection of the latest styles and vibrant colours.</p>
+            </div>
+            <div class="feature-card" style="transition-delay: 0.3s;">
+                <div class="feature-icon">💰</div>
+                <h3>Best Value</h3>
+                <p>Premium fashion at prices that make every parent happy. Quality doesn't have to break the bank.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Map -->
+    <section class="section contact-section" id="contact">
+        <div class="section-header reveal">
+            <span class="section-label">Get in Touch</span>
+            <h2 class="section-title">Visit Our Store</h2>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info-card reveal">
+                <h3>Contact Details</h3>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-detail">
+                        <span class="label">Address</span>
+                        <span class="value">1197, Pari Kids Wear, Kalikadevi Road, Davangere</span>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <div class="contact-detail">
+                        <span class="label">Phone</span>
+                        <span class="value">
+                            <a href="tel:+918660724090">+91 8660724090</a><br>
+                            <a href="tel:+916362685266">+91 6362685266</a>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="contact-item">
+                    <div class="contact-icon">⏰</div>
+                    <div class="contact-detail">
+                        <span class="label">Hours</span>
+                        <span class="value">
+                            Sun – Fri: 10:00 AM – 9:00 PM<br>
+                            Saturday: 10:00 AM – 8:00 PM
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="map-wrapper reveal">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3863.212596954661!2d75.91652770864007!3d14.472478280146317!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bba2599a6d4a879%3A0xfd8ea7bcd9a61b20!2sPari%20Kidswear!5e0!3m2!1sen!2sin!4v1771430383596!5m2!1sen!2sin"
+                    loading="lazy" title="Pari Kids Wear Location">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social / QR -->
+    <section class="section social-section" id="social">
+        <div class="section-header reveal">
+            <span class="section-label">Connect with Us</span>
+            <h2 class="section-title">Follow Our Journey</h2>
+        </div>
+        <div class="social-card reveal">
+            <h3>@parikidswear_</h3>
+            <p>Scan to follow us on Instagram</p>
+            <img class="qr-img"
+                src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.instagram.com/parikidswear_/"
+                alt="Instagram QR Code">
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-brand">Pari Kids Wear</div>
+        <p>© 2026 Pari Kids Wear. Crafted with ❤️ in Davangere.</p>
+    </footer>
+
+    <script>
+        // === Logo Intro Orchestration ===
+        const introScreen = document.getElementById('introScreen');
+        const introLogo = document.getElementById('introLogo');
+
+        // After logo reveal finishes (0.3s delay + 1.2s anim = 1.5s), start glow
+        setTimeout(() => {
+            introLogo.classList.add('glow');
+        }, 1800);
+
+        // After glow finishes (~1.5s later = 3.3s total), dismiss the intro
+        setTimeout(() => {
+            introScreen.classList.add('hide');
+        }, 3500);
+
+        // Remove from DOM after exit animation (1s)
+        setTimeout(() => {
+            introScreen.style.display = 'none';
+        }, 4600);
+        // === Navbar scroll effect ===
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // === Scroll reveal with 3D entry for cards ===
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -60px 0px'
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal, .feature-card').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // === 3D tilt effect on hover for cards ===
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / centerY * -8;
+                const rotateY = (x - centerX) / centerX * 8;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)';
+            });
+        });
+
+        // === Parallax floating shapes ===
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            document.querySelectorAll('.shape').forEach((shape, i) => {
+                const speed = 0.02 + (i * 0.01);
+                shape.style.transform = `translateY(${scrollY * speed}px) rotate(${scrollY * speed * 0.5}deg)`;
+            });
+        });
+    </script>
+
+</body>
+
+</html>
